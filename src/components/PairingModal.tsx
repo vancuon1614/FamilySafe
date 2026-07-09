@@ -19,14 +19,30 @@ export default function PairingModal({ isOpen, onClose, onAddDevice }: PairingMo
 
   if (!isOpen) return null;
 
-  const generateCode = () => {
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setPairingCode(`${code.slice(0, 3)}-${code.slice(3)}`);
+  const generateCode = async () => {
+    try {
+      const response = await fetch('/api/pairing/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ childName: name.trim() || 'Trẻ Em' }),
+      });
+      const data = await response.json();
+      if (data.code) {
+        setPairingCode(data.code);
+      } else {
+        // Fallback nếu API lỗi
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        setPairingCode(`${code.slice(0, 3)}-${code.slice(3)}`);
+      }
+    } catch (e) {
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      setPairingCode(`${code.slice(0, 3)}-${code.slice(3)}`);
+    }
   };
 
-  const handleNextToCode = () => {
+  const handleNextToCode = async () => {
     if (!name.trim()) return;
-    generateCode();
+    await generateCode();
     setStep(2);
   };
 

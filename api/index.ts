@@ -380,7 +380,16 @@ app.get("/api/pairing/status/:code", async (req, res) => {
 
 // JOIN Pairing (Called by real Flutter client)
 app.post("/api/pairing/join", async (req, res) => {
-  const { code, deviceModel, batteryLevel, apps, latitude, longitude } = req.body;
+  let { code, deviceModel, batteryLevel, apps, latitude, longitude } = req.body;
+  
+  // Tự động chuẩn hóa mã: ví dụ "505641" -> "505-641"
+  if (code && typeof code === 'string') {
+    const cleanCode = code.replace(/[\s-]/g, '');
+    if (cleanCode.length === 6) {
+      code = `${cleanCode.slice(0, 3)}-${cleanCode.slice(3)}`;
+    }
+  }
+
   const db = await readDb();
   const session = db.pairingSessions[code];
 
