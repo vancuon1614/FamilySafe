@@ -347,7 +347,7 @@ app.post("/api/notifications/add", async (req, res) => {
 
 // Generate pairing code
 app.post("/api/pairing/create", async (req, res) => {
-  const { name, avatar, os } = req.body;
+  const { name, childName, avatar, os } = req.body;
   const db = await readDb();
 
   // Create a 6 digit code
@@ -356,7 +356,7 @@ app.post("/api/pairing/create", async (req, res) => {
 
   db.pairingSessions[formattedCode] = {
     code: formattedCode,
-    name: name || "Trẻ Em",
+    name: name || childName || "Trẻ Em",
     avatar: avatar || "🦁",
     os: os || "Android",
     status: "pending"
