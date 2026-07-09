@@ -1,0 +1,6 @@
+{
+  "name": "FamilySafe Link",
+  "description": "An interactive, side-by-side Parental Control Dashboard and Child Device Simulator demonstrating remote locking, screen time limits, app management, live location tracking, and real-time notification alerts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
